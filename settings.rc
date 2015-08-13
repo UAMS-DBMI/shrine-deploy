@@ -18,13 +18,18 @@ export SHRINE_SVN_TRUNK_URL_BASE="https://open.med.harvard.edu/svn/shrine/trunk/
 export I2B2_DOMAIN_ID=i2b2demo
 
 # REQUIRED
-#These values are for user authentication and accessing the SHRINE ontologies
-#By default, they are hosted by the same docker container and aliased as postgresi2b2. 
-#The IP address of the machine hosting the i2b2 PM cell
+## These values are for user authentication and accessing the SHRINE ontologies
+## By default, they are hosted by the same docker container and aliased as postgresi2b2. 
+## The IP address of the machine hosting the i2b2 PM cell
 export I2B2_PM_IP=postgresi2b2
 #The IP address of the machine hosting the i2b2 Ontology cell
 export I2B2_ONT_IP=postgresi2b2
-#The default address for the i2b2 database container.
+# OPTIONAL
+## These values allow you to use the i2b2 demo data for testing purposes
+# The IP address of the machine hosting the i2b2 CRC cell
+export I2B2_CRC_IP=postgresi2b2
+# The IP address of the machine hosting the i2b2 WORK cell
+export I2B2_WORK_IP=postgresi2b2
 #TODO: Make this a full JDBC address. For now, assumes postgres DB on default port.
 #During the deployment process, the i2b2 build process needs to execute SQL scripts against
 #a non-Dockerized database. The postgres container is created, exposed as an externally-facing DB,
@@ -35,8 +40,8 @@ export I2B2_DEFAULT_DATABASE_ADDR=postgresi2b2
 export I2B2_DEFAULT_SCHEMA_PASSWORD=demouser
 
 #The externally facing addresses and ports for i2b2 services (optional)
-export I2B2_REST_EXTERNAL_IP=
-export I2B2_REST_EXTERNAL_PORT=9090
+export I2B2_REST_IP=i2b2
+export I2B2_REST_PORT=9090
 export I2B2_ADMIN_EXTERNAL_ADDR=
 
 #The externally-facing address and port SHRINE listens on
@@ -54,6 +59,9 @@ export SHRINE_OBFUSCATED_WEBCLIENT_PASSWORD=demouser
 #SHRINE_OBFUSCATED_WEBCLIENT_PASSWORD hashed with i2b2's password-hashing algorithm
 if [ -f I2b2PasswordCryptor.java ] ; then
   export SHRINE_PASSWORD_CRYPTED=`javac I2b2PasswordCryptor.java && java -classpath I2b2PasswordCryptor ${SHRINE_OBFUSCATED_WEBCLIENT_PASSWORD}`
+else
+  #password=demouser
+  export SHRINE_PASSWORD_CRYPTED='9117d59a69dc49807671a51f10ab7f'
 fi
 
 #The container directory containing the JBoss application server that i2b2 runs in.
@@ -65,6 +73,7 @@ export JBOSS_DEPLOY_DIR="${JBOSS_HOME}/standalone/deployments"
 # However, we will need to exec psql commands as the postgres user.
 export I2B2_DB_PSQL_USER=postgres
 
+export I2B2_DB_NAME=i2b2
 export I2B2_DB_HIVE_USER=i2b2hive
 export I2B2_DB_HIVE_PASSWORD=demouser
 
@@ -84,6 +93,10 @@ export I2B2_DB_SHRINE_ONT_PASSWORD=demouser
 export I2B2_DB_SHRINE_ONT_JDBC_URL=jdbc:postgresql://${I2B2_ONT_IP}/${I2B2_DB}?searchpath=${I2B2_DB_ONT_USER}
 #Java DataSource name used by the Shrine ontology cell
 export I2B2_DB_SHRINE_ONT_DATASOURCE_NAME=OntologyShrineDS
+
+#Postgres role for the Shrine Work cell
+export I2B2_DB_WORK_USER=i2b2workdata
+export I2B2_DB_WORK_PASSWORD=demouser
 
 #END THINGS THAT WILL NEED TO CHANGE
 

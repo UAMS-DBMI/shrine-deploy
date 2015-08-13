@@ -12,12 +12,12 @@
 	// THESE ARE ALL THE DOMAINS A USER CAN LOGIN TO
 	lstDomains: [
                 {
-                    domain: "i2b2demo",
+                    domain: "I2B2_DOMAIN_ID",
                     name: "UAMS SHRINE Test",
                     debug: true,
                     allowAnalysis: true,
 		    isSHRINE: true,
-                    urlCellPM: "http://i2b2:9090/i2b2/services/PMService/"
+                    urlCellPM: "http://I2B2_REST_IP:I2B2_REST_PORT/i2b2/services/PMService/"
                 }
 	]
 	// -------------------------------------------------------------------------------------------
