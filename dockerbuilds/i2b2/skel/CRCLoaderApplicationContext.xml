@@ -29,9 +29,9 @@
 	<bean id="CRCBootstrapDS" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://postgresi2b2:5432/i2b2?searchpath=i2b2hive" />
-		<property name="username" value="i2b2hive" />
-		<property name="password" value="demouser" />
+		<property name="url" value="jdbc:postgresql://I2B2_DEFAULT_DATABASE_ADDR:5432/I2B2_DB_NAME?searchpath=I2B2_DB_HIVE_USER" />
+		<property name="username" value="I2B2_DB_HIVE_USER" />
+		<property name="password" value="I2B2_DB_HIVE_PASSWORD" />
 	</bean>
 
 
