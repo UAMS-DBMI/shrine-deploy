@@ -1,0 +1,138 @@
+#!/bin/bash
+
+#
+#The version of Shrine to install
+export SHRINE_VERSION=1.19.2
+
+IS_SNAPSHOT=`expr ${SHRINE_VERSION} : ".\+\?SNAPSHOT\$"`
+
+if [ ${IS_SNAPSHOT} != 0 ] ; then
+  echo "WARNING: deploying snapshots is not supported"
+  exit
+fi
+
+export SHRINE_SVN_URL_BASE="https://open.med.harvard.edu/svn/shrine/releases/${SHRINE_VERSION}/"
+export SHRINE_SVN_TRUNK_URL_BASE="https://open.med.harvard.edu/svn/shrine/trunk/"
+
+#The i2b2 domain used for hive communication.  See the i2b2 documentation for information about i2b2 domains.
+export I2B2_DOMAIN_ID=i2b2demo
+
+# REQUIRED
+#These values are for user authentication and accessing the SHRINE ontologies
+#By default, they are hosted by the same docker container and aliased as postgresi2b2. 
+#The IP address of the machine hosting the i2b2 PM cell
+export I2B2_PM_IP=postgresi2b2
+#The IP address of the machine hosting the i2b2 Ontology cell
+export I2B2_ONT_IP=postgresi2b2
+#The default address for the i2b2 database container.
+#TODO: Make this a full JDBC address. For now, assumes postgres DB on default port.
+#During the deployment process, the i2b2 build process needs to execute SQL scripts against
+#a non-Dockerized database. The postgres container is created, exposed as an externally-facing DB,
+#populated with values, then shut down and re-launched as a new container only accessible via the
+#Docker network
+export I2B2_DEFAULT_DATABASE_ADDR=postgresi2b2
+#The default password for i2b2 database schemas
+export I2B2_DEFAULT_SCHEMA_PASSWORD=demouser
+
+#The externally facing addresses and ports for i2b2 services (optional)
+export I2B2_REST_EXTERNAL_IP=
+export I2B2_REST_EXTERNAL_PORT=9090
+export I2B2_ADMIN_EXTERNAL_ADDR=
+
+#The externally-facing address and port SHRINE listens on
+export SHRINE_IP=
+export SHRINE_PORT=6060
+#The SSL port requests to Shrine are redirected to
+export SHRINE_SSL_PORT=6443
+
+#The i2b2 user Shrine should log in as.
+export SHRINE_USER=shrine
+
+#The plaintext password for the i2b2 user Shrine should log in as.
+export SHRINE_OBFUSCATED_WEBCLIENT_PASSWORD=demouser
+
+#SHRINE_OBFUSCATED_WEBCLIENT_PASSWORD hashed with i2b2's password-hashing algorithm
+if [ -f I2b2PasswordCryptor.java ] ; then
+  export SHRINE_PASSWORD_CRYPTED=`javac I2b2PasswordCryptor.java && java -classpath I2b2PasswordCryptor ${SHRINE_OBFUSCATED_WEBCLIENT_PASSWORD}`
+fi
+
+#The container directory containing the JBoss application server that i2b2 runs in.
+export JBOSS_HOME=/opt/jboss/wildfly
+
+#A directory inside JBoss where important files will go.
+export JBOSS_DEPLOY_DIR="${JBOSS_HOME}/standalone/deployments"
+
+# However, we will need to exec psql commands as the postgres user.
+export I2B2_DB_PSQL_USER=postgres
+
+export I2B2_DB_HIVE_USER=i2b2hive
+export I2B2_DB_HIVE_PASSWORD=demouser
+
+#Postgres role for the i2b2 CRC cell
+export I2B2_DB_CRC_USER=i2b2demodata
+#Java DataSource name used by the i2b2 CRC cell
+export I2B2_DB_CRC_DATASOURCE_NAME=QueryToolDemoDS
+
+#Postgres role for the i2b2 PM cell
+export I2B2_DB_PM_USER=i2b2pm
+export I2B2_DB_PM_PASSWORD=demouser
+
+#Postgres role for the Shrine ontology cell
+export I2B2_DB_ONT_USER=i2b2metadata
+export I2B2_DB_SHRINE_ONT_USER=shrine_ont
+export I2B2_DB_SHRINE_ONT_PASSWORD=demouser
+export I2B2_DB_SHRINE_ONT_JDBC_URL=jdbc:postgresql://${I2B2_ONT_IP}/${I2B2_DB}?searchpath=${I2B2_DB_ONT_USER}
+#Java DataSource name used by the Shrine ontology cell
+export I2B2_DB_SHRINE_ONT_DATASOURCE_NAME=OntologyShrineDS
+
+#END THINGS THAT WILL NEED TO CHANGE
+
+#Utility functions follow
+
+function require()
+{
+  if [ -z "$1" ] ; then
+    echo "Requirement not met: $2"
+    exit -1
+  fi
+}
+
+function escape()
+{
+  ESCAPED=$(echo "$1" | sed "s| |\\\ |g" | sed "s|\:|\\\:|g" | sed "s|\.|\\\.|g" | sed "s|\/|\\\/|g")
+}
+
+function interpolate_file()
+{
+  file=$1
+  pattern=$2
+
+  escape $3
+
+  replacement="$ESCAPED"
+
+  sed s/$pattern/$replacement/g $file
+}
+
+function interpolate()
+{
+  pattern=$1
+
+  escape $2
+
+  replacement="$ESCAPED"
+
+  sed s/$pattern/$replacement/g
+}
+
+
+
+require ${SHRINE_VERSION} "SHRINE_VERSION must be set, and not be a snapshot"
+require ${SHRINE_SVN_URL_BASE} "SHRINE_SVN_URL_BASE must be set"
+require ${I2B2_DOMAIN_ID} "I2B2_DOMAIN_ID must be set"
+require ${ETH0_IP} "ETH0_IP must be set"
+require ${SHRINE_IP} "SHRINE_IP must be set"
+require ${SHRINE_PORT} "SHRINE_PORT must be set"
+require ${SHRINE_SSL_PORT} "SHRINE_SSL_PORT must be set"
+require ${I2B2_PM_IP} "I2B2_PM_IP must be set"
+require ${I2B2_ONT_IP} "I2B2_ONT_IP must be set"

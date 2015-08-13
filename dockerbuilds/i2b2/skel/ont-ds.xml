@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This file has interpolated parameters.-->
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema">
+	<datasource jta="false" jndi-name="java:/OntologyDemoDS"
+		pool-name="OntologyDemoDS" enabled="true" use-ccm="false">
+		<connection-url>jdbc:postgresql://I2B2_DEFAULT_DATABASE_ADDR:5432/i2b2?searchpath=i2b2metadata</connection-url>
+		<driver-class>org.postgresql.Driver</driver-class>
+		<driver>postgresql-9.2-1002.jdbc4.jar</driver>
+		<security>
+			<user-name>i2b2metadata</user-name>
+			<password>I2B2_DEFAULT_SCHEMA_PASSWORD</password>
+		</security>
+		<validation>
+			<validate-on-match>false</validate-on-match>
+			<background-validation>false</background-validation>
+		</validation>
+		<statement>
+			<share-prepared-statements>false</share-prepared-statements>
+		</statement>
+	</datasource>
+	<datasource jta="false" jndi-name="java:/OntologyBootStrapDS"
+    		pool-name="OntologyBootStrapDS" enabled="true" use-ccm="false">
+    		<connection-url>jdbc:postgresql://I2B2_DEFAULT_DATABASE_ADDR:5432/i2b2?searchpath=i2b2hive</connection-url>
+    		<driver-class>org.postgresql.Driver</driver-class>
+    		<driver>postgresql-9.2-1002.jdbc4.jar</driver>
+    		<security>
+        		<user-name>i2b2hive</user-name>
+        		<password>I2B2_DEFAULT_SCHEMA_PASSWORD</password>
+    		</security>
+    		<validation>
+        		<validate-on-match>false</validate-on-match>
+        		<background-validation>false</background-validation>
+		</validation>
+		<statement>
+    			    <share-prepared-statements>false</share-prepared-statements>
+    		</statement>
+	</datasource>
+	<datasource jta="false" jndi-name="java:/I2B2_DB_SHRINE_ONT_DATASOURCE_NAME"
+    		pool-name="I2B2_DB_SHRINE_ONT_DATASOURCE_NAME" enabled="true" use-ccm="false">
+    		<connection-url>I2B2_DB_SHRINE_ONT_JDBC_URL</connection-url>
+    		<driver-class>org.postgresql.Driver</driver-class>
+    		<driver>postgresql-9.2-1002.jdbc4.jar</driver>
+    		<security>
+    			<user-name>I2B2_DB_SHRINE_ONT_USER</user-name>
+    			<password>I2B2_DB_SHRINE_ONT_PASSWORD</password>
+    		</security>
+    		<validation>
+    			<validate-on-match>false</validate-on-match>
+    			<background-validation>false</background-validation>
+    		</validation>
+    		<statement>
+    			<share-prepared-statements>false</share-prepared-statements>
+    		</statement>
+    	</datasource>
+</datasources>
