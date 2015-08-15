@@ -28,7 +28,7 @@ fi
 #buildorder=(mysql postgres tomcat i2b2 i2b2admin shrine shrineadapter shrinehub)
 builddeps=(mysql postgres i2b2base tomcat shrine)
 buildi2b2=(i2b2load i2b2 i2b2admin)
-buildshrine=(shrinehub shrineadapter)
+buildshrine=(shrinehub shrineqep)
 
 #WRITE FUNCTIONS FOR EACH DEPLOYMENT TYPE, FOREXAMPLE MOVE MySQL into this file
 
@@ -56,7 +56,7 @@ function deploy {
 			#FINALLY, LAUNCH DB FOR GOOD
 			sudo docker run -it --volumes-from $storename --name=$storenameDB -d shrine:mysql;;
 		shrine)
-			[[ $2 =~ (shrine(adapter|hub|.*)(.*)) ]]
+			[[ $2 =~ (shrine(adapter|centralhub|hub|qep|.*)(.*)) ]]
 			type=${BASH_REMATCH[2]}
 			name=${BASH_REMATCH[1]}
 			chcon -Rt svirt_sandbox_file_t ${INSTALL_PATH}/configs/$name
@@ -68,17 +68,28 @@ function deploy {
 				-v ${INSTALL_PATH}/configs/$name/:/shrine/ -d shrine:shrineadapter
 			elif [[ $type == hub ]]; then
 				sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
-				--link shrineadapterUAMS:shrineadapterUAMS --link shrineadapterUAMSDemo:shrineadapterUAMSDemo \
-				-p 6443:8443 -p 6060:8080 -p 6009:8009 -v $INSTALL_PATH/configs/$name/:/shrine/ \
+				--link shrineadapterDemo:shrineadapterDemo --link shrineadapterDemo:shrineadapterDemo \
+				-p 6443:8443 -p 6060:8080 -p 8009:8009 -v $INSTALL_PATH/configs/$name/:/shrine/ \
 				--link i2b2:i2b2 -d shrine:shrinehub
+			elif [[ $type == centralhub ]]; then
+				sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
+				--link shrineqepDemo:shrineadapterDemo --link shrineqepDemo:shrineadapterDemo \
+				-p 7443:8443 -v $INSTALL_PATH/configs/$name/:/shrine/ \
+				-d shrine:shrinehub
+                        elif [[ $type == qep ]]; then
+                                sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
+                                --link shrinecentralhubDemo:hub \
+                                -p 6443:8443 -p 6060:8080 -p 8009:8009 -v $INSTALL_PATH/configs/$name/:/shrine/ \
+                                --link i2b2:i2b2 -d shrine:shrineqep
 			else
 				sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
-				-p 6443:8443 -p 6060:8080 -p 6009:8009 -v $INSTALL_PATH/configs/$name/:/shrine/ \
+				-p 6443:8443 -p 6060:8080 -p 8009:8009 -v $INSTALL_PATH/configs/$name/:/shrine/ \
 				-d shrine:shrineallinone
 			fi;;
 		postgres_load)
 				storename=postgres$2
 				sudo docker run -it --name $storename -p 5432:5432 -v /var/lib/postgresql/data -e POSTGRES_PASSWORD=pgrootpass -d shrine:postgres
+				sleep 30
 			;;
 		postgres)
 				storename=postgres$2
@@ -94,28 +105,27 @@ function deploy {
 
 #STORE ALL IMAGES UNDER ONE DESIGNATION FOR NOW. THINK ABOUT IT
 #CATCH ANY ERRORS AND EXIT IF FAILS
-for build in ${builddeps[@]}; do
-	sudo docker build -t shrine:$build dockerbuilds/$build/
-done
+#for build in ${builddeps[@]}; do
+#	sudo docker build -t shrine:$build dockerbuilds/$build/
+#done
 
 #BE PREPARED TO ROLLBACK ALL DOCKER IMAGES
 declare -A success
 declare -A fail
 
 # Load data for i2b2. This includes the SHRINE ontology and the users
-deploy postgres_load i2b2
-for build in ${buildi2b2[@]}; do
-	sudo docker build --no-cache -t shrine:$build dockerbuilds/$build/
-done
-sudo docker exec -it postgresi2b2 psql -U postgres -f /i2b2setup.sql i2b2
+#deploy postgres_load i2b2
+#for build in ${buildi2b2[@]}; do
+#	sudo docker build --no-cache -t shrine:$build dockerbuilds/$build/
+#done
+#sudo docker exec -it postgresi2b2 psql -U postgres -f /i2b2setup.sql i2b2
 
-deploy postgres i2b2
-deploy i2b2 i2b2
+#deploy postgres i2b2
+#deploy i2b2 i2b2
 
 # Build and deploy SHRINE
 for build in ${buildshrine[@]}; do
 	sudo docker build --no-cache -t shrine:$build dockerbuilds/$build/
 done
-deploy shrine shrineadapterUAMS
-deploy shrine shrineadapterUAMSDemo
-deploy shrine shrinehubUAMS 
+deploy shrine shrineqepDemo
+deploy shrine shrinecentralhubDemo
