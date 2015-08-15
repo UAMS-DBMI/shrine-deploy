@@ -2,12 +2,12 @@
 <datasources xmlns="http://www.jboss.org/ironjacamar/schema">
         <datasource jta="false" jndi-name="java:/CRCBootStrapDS"
                 pool-name="CRCBootStrapDS" enabled="true" use-ccm="false">
-                <connection-url>jdbc:postgresql://postgresi2b2:5432/i2b2?searchpath=i2b2hive</connection-url>
+                <connection-url>jdbc:postgresql://I2B2_DEFAULT_DATABASE_ADDR:5432/I2B2_DB_NAME?searchpath=I2B2_DB_HIVE_USER</connection-url>
                 <driver-class>org.postgresql.Driver</driver-class>
                 <driver>postgresql-9.2-1002.jdbc4.jar</driver>
                 <security>
-                        <user-name>i2b2hive</user-name>
-                        <password>demouser</password>
+                        <user-name>I2B2_DB_HIVE_USER</user-name>
+                        <password>I2B2_DEFAULT_SCHEMA_PASSWORD</password>
                 </security>
                 <validation>
                         <validate-on-match>false</validate-on-match>
@@ -19,12 +19,12 @@
         </datasource>
 	<datasource jta="false" jndi-name="java:/QueryToolDemoDS"
 		pool-name="QueryToolDemoDS" enabled="true" use-ccm="false">
-		<connection-url>jdbc:postgresql://postgresi2b2:5432/i2b2?searchpath=i2b2demodata</connection-url>
+		<connection-url>jdbc:postgresql://I2B2_DEFAULT_DATABASE_ADDR:5432/I2B2_DB_NAME?searchpath=I2B2_DB_CRC_USER</connection-url>
 		<driver-class>org.postgresql.Driver</driver-class>
 		<driver>postgresql-9.2-1002.jdbc4.jar</driver>
 		<security>
-			<user-name>i2b2demodata</user-name>
-			<password>demouser</password>
+			<user-name>I2B2_DB_CRC_USER</user-name>
+			<password>I2B2_DEFAULT_SCHEMA_PASSWORD</password>
 		</security>
 		<validation>
 			<validate-on-match>false</validate-on-match>

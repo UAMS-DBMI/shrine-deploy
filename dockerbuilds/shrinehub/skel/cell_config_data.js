@@ -11,7 +11,7 @@
     name: "SHRINE Cell",
         description: "The SHRINE cell...",
         category: ["core","cell","shrine"],
-        newTopicURL: "https://FIX_ME:6443/steward/client/index.html#/topics",
+        newTopicURL: "https://SHRINE_IP:SHRINE_SSL_PORT/steward/client/index.html#/topics",
         readApprovedURL:"https://localhost:8443/shrine/rest/i2b2/request"
     }
 }
