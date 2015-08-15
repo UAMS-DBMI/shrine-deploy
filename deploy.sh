@@ -73,12 +73,11 @@ function deploy {
 				--link i2b2:i2b2 -d shrine:shrinehub
 			elif [[ $type == centralhub ]]; then
 				sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
-				--link shrineqepDemo:shrineadapterDemo --link shrineqepDemo:shrineadapterDemo \
+				--link shrineqepDemo:shrineadapterDemo --link i2b2:i2b2 \
 				-p 7443:8443 -v $INSTALL_PATH/configs/$name/:/shrine/ \
 				-d shrine:shrinehub
                         elif [[ $type == qep ]]; then
                                 sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
-                                --link shrinecentralhubDemo:hub \
                                 -p 6443:8443 -p 6060:8080 -p 8009:8009 -v $INSTALL_PATH/configs/$name/:/shrine/ \
                                 --link i2b2:i2b2 -d shrine:shrineqep
 			else
