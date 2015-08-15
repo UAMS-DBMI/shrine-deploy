@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context swallowOutput="true">
+
+    <Resource name="jdbc/shrineDB" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="30" maxWait="10000"
+               username="shrine2015" password="qu3rYU$3r" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://mysql:3306/shrine_query_history"
+               testOnBorrow="true" validationQuery="SELECT 1"/>
+</Context>
