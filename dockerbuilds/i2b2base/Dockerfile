@@ -5,7 +5,7 @@ USER root
 EXPOSE 9090
 RUN sed -i "s|\(http\.port\):8080|\1:9090|g" /opt/jboss/wildfly/standalone/configuration/standalone.xml
 #INSTALL Ant
-RUN yum -y install ant --disablerepo="*" --enablerepo=fedora
+RUN yum -y install ant
 #Environment for i2b2. JAVA_HOME is already defined
 ENV JBOSS_HOME /opt/jboss/wildfly 
 ENV ANT_HOME /usr/share/ant
