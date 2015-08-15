@@ -1,7 +1,7 @@
 FROM mysql:5.5
 EXPOSE 3306
 RUN apt-get update && apt-get install -y wget
-ENV SHRINE_SVN_URL_BASE https://open.med.harvard.edu/svn/shrine/releases/1.19.1
+ENV SHRINE_SVN_URL_BASE https://open.med.harvard.edu/svn/shrine/releases/SHRINE_VERSION
 
 RUN touch /buildtables.sql \
 && cd / \

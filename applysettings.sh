@@ -8,9 +8,12 @@ source settings.rc
 
 rm -f files_created
 
-interpolate_file ./dockerbuilds/shrine/skel/Dockerfile "SHRINE_VERSION" "${SHRINE_VERSION}" > dockerbuilds/shrine/Dockerfile
-
-echo "dockerbuilds/shrine/Dockerfile" >> files_created
+for p in ./dockerbuilds/*/skel/Dockerfile; do
+        skel="skel/"
+        outfile=${p/skel/""}
+        interpolate_file "${p}" "SHRINE_VERSION" "${SHRINE_VERSION}" > "${outfile}"
+        echo ${outfile} >> files_created
+done
 
 for p in ./dockerbuilds/i2b2*/skel/*properties; do
         skel="skel/"
