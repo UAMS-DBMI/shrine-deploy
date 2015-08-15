@@ -12,20 +12,20 @@ interpolate_file ./dockerbuilds/shrine/skel/Dockerfile "SHRINE_VERSION" "${SHRIN
 
 echo "dockerbuilds/shrine/Dockerfile" >> files_created
 
-for p in dockerbuilds/i2b2*/skel/*properties; do
+for p in ./dockerbuilds/i2b2*/skel/*properties; do
         skel="skel/"
         outfile=${p/skel/""}
         interpolate_file "${p}" "SHRINE_IP" "${SHRINE_IP}" > "${outfile}"
         echo ${outfile} >> files_created
 done
 
-interpolate_file dockerbuilds/i2b2/skel/CRCLoaderApplicationContext.xml "I2B2_DEFAULT_DATABASE_ADDR" "$I2B2_DEFAULT_DATABASE_ADDR" | \
+interpolate_file ./dockerbuilds/i2b2/skel/CRCLoaderApplicationContext.xml "I2B2_DEFAULT_DATABASE_ADDR" "$I2B2_DEFAULT_DATABASE_ADDR" | \
     interpolate "I2B2_DB_NAME" "$I2B2_DB_NAME" | \
     interpolate "I2B2_DB_HIVE_USER" "$I2B2_DB_HIVE_USER" | \
     interpolate "I2B2_DB_HIVE_PASSWORD" "$I2B2_DB_HIVE_PASSWORD" > dockerbuilds/i2b2/CRCLoaderApplicationContext.xml 
     echo "dockerbuilds/i2b2/CRCLoaderApplicationContext.xml" >> files_created
 
-for p in dockerbuilds/i2b2*/skel/*ds-xml; do
+for p in ./dockerbuilds/i2b2*/skel/*ds.xml; do
         skel="skel/"
         outfile=${p/skel/""}
         interpolate_file "${p}" "I2B2_DB_HIVE_DATASOURCE_NAME" "$I2B2_DB_HIVE_DATASOURCE_NAME" | \
@@ -50,7 +50,7 @@ for p in dockerbuilds/i2b2*/skel/*ds-xml; do
         echo ${outfile} >> files_created
 done
 
-for p in dockerbuilds/i2b2admin/skel/*.js; do
+for p in ./dockerbuilds/i2b2admin/skel/*.js; do
         skel="skel/"
         outfile=${p/skel/""}
         interpolate_file "${p}" "I2B2_REST_IP" "$I2B2_REST_IP" | \
@@ -59,7 +59,7 @@ for p in dockerbuilds/i2b2admin/skel/*.js; do
         echo ${outfile} >> files_created
 done
 
-for p in dockerbuilds/shrine*/skel/*.js; do
+for p in ./dockerbuilds/shrine*/skel/*.js; do
         skel="skel/"
         outfile=${p/skel/""}
         interpolate_file "${p}" "SHRINE_IP" "$SHRINE_IP" | \
