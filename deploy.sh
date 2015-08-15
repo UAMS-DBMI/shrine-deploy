@@ -105,23 +105,23 @@ function deploy {
 
 #STORE ALL IMAGES UNDER ONE DESIGNATION FOR NOW. THINK ABOUT IT
 #CATCH ANY ERRORS AND EXIT IF FAILS
-#for build in ${builddeps[@]}; do
-#	sudo docker build -t shrine:$build dockerbuilds/$build/
-#done
+for build in ${builddeps[@]}; do
+	sudo docker build -t shrine:$build dockerbuilds/$build/
+done
 
 #BE PREPARED TO ROLLBACK ALL DOCKER IMAGES
 declare -A success
 declare -A fail
 
 # Load data for i2b2. This includes the SHRINE ontology and the users
-#deploy postgres_load i2b2
-#for build in ${buildi2b2[@]}; do
-#	sudo docker build --no-cache -t shrine:$build dockerbuilds/$build/
-#done
-#sudo docker exec -it postgresi2b2 psql -U postgres -f /i2b2setup.sql i2b2
+deploy postgres_load i2b2
+for build in ${buildi2b2[@]}; do
+	sudo docker build --no-cache -t shrine:$build dockerbuilds/$build/
+done
+sudo docker exec -it postgresi2b2 psql -U postgres -f /i2b2setup.sql i2b2
 
-#deploy postgres i2b2
-#deploy i2b2 i2b2
+deploy postgres i2b2
+deploy i2b2 i2b2
 
 # Build and deploy SHRINE
 for build in ${buildshrine[@]}; do
