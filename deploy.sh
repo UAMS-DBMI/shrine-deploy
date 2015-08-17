@@ -87,7 +87,8 @@ function deploy {
 			fi;;
 		postgres_load)
 				storename=postgres$2
-				sudo docker run -it --name $storename -p 5432:5432 -v /var/lib/postgresql/data -e POSTGRES_PASSWORD=pgrootpass -d shrine:postgres
+				sudo docker run -it --name $storename -p 5432:5432 -v /var/lib/postgresql/data -e POSTGRES_PASSWORD=pgrootpass \
+				-e POSTGRESDB=$I2B2_DB_NAME -d shrine:postgres
 				sleep 30
 			;;
 		postgres)
@@ -117,7 +118,9 @@ deploy postgres_load i2b2
 for build in ${buildi2b2[@]}; do
 	sudo docker build --no-cache -t shrine:$build dockerbuilds/$build/
 done
-sudo docker exec -it postgresi2b2 psql -U postgres -f /i2b2setup.sql i2b2
+# This loads the i2b2 modifications after the scripts have been run
+sudo docker exec postgresi2b2 psql -U postgres -f /ShrineDemo.sql i2b2
+sudo docker exec postgresi2b2 psql -U postgres -f /i2b2setup.sql i2b2
 
 deploy postgres i2b2
 deploy i2b2 i2b2
