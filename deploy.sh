@@ -28,7 +28,7 @@ fi
 #buildorder=(mysql postgres tomcat i2b2 i2b2admin shrine shrineadapter shrinehub)
 builddeps=(mysql postgres i2b2base tomcat shrine)
 buildi2b2=(i2b2load i2b2 i2b2admin)
-buildshrine=(shrinehub shrineqep)
+buildshrine=(shrineqep)
 
 #WRITE FUNCTIONS FOR EACH DEPLOYMENT TYPE, FOREXAMPLE MOVE MySQL into this file
 
@@ -75,7 +75,7 @@ function deploy {
 				sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
 				--link shrineqepDemo:shrineadapterDemo --link i2b2:i2b2 \
 				-p 7443:8443 -v $INSTALL_PATH/configs/$name/:/shrine/ \
-				-d shrine:shrinehub
+				-d shrine:shrine
                         elif [[ $type == qep ]]; then
                                 sudo docker run -it -h $name --name $name --link ${MYSQL_INSTANCE_NAME}DB:mysql \
                                 -p 6443:8443 -p 6060:8080 -p 8009:8009 -v $INSTALL_PATH/configs/$name/:/shrine/ \
@@ -121,7 +121,9 @@ done
 # This loads the i2b2 modifications after the scripts have been run
 sudo docker exec postgresi2b2 psql -U postgres -f /ShrineDemo.sql i2b2
 sudo docker exec postgresi2b2 psql -U postgres -f /i2b2setup.sql i2b2
-
+echo 'Inserting SHRINE Ontology. Please wait.'
+sleep 60
+echo 'Done Inserting SHRINE Ontology.'
 deploy postgres i2b2
 deploy i2b2 i2b2
 

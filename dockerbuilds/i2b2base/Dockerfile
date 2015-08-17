@@ -12,9 +12,9 @@ ENV ANT_HOME /usr/share/ant
 ENV PATH $PATH:$ANT_HOME/bin:$JAVA_HOME/bin
 #DOWNLOAD and INSTALL Axis2
 USER jboss
-RUN curl -O http://ftp.wayne.edu/apache//axis/axis2/java/core/1.6.2/axis2-1.6.2-war.zip \
+RUN curl -O http://www.interior-dsgn.com/apache//axis/axis2/java/core/1.6.3/axis2-1.6.3-war.zip \
 && mkdir -p /opt/jboss/wildfly/standalone/deployments/i2b2.war/ \
-&& unzip axis2-1.6.2-war.zip axis2.war \
+&& unzip axis2-1.6.3-war.zip axis2.war \
 && unzip axis2.war -d /opt/jboss/wildfly/standalone/deployments/i2b2.war/ \
 && rm -f axis* \
 && touch /opt/jboss/wildfly/standalone/deployments/i2b2.war.dodeploy
