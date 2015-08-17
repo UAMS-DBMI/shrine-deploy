@@ -79,6 +79,7 @@ export I2B2_DB_HIVE_PASSWORD=demouser
 
 #Postgres role for the i2b2 CRC cell
 export I2B2_DB_CRC_USER=i2b2demodata
+export I2B2_DB_CRC_PASSWORD=i2b2demodata
 #Java DataSource name used by the i2b2 CRC cell
 export I2B2_DB_CRC_DATASOURCE_NAME=QueryToolDemoDS
 
