@@ -28,7 +28,7 @@ interpolate_file ./dockerbuilds/i2b2/skel/CRCLoaderApplicationContext.xml "I2B2_
     interpolate "I2B2_DB_NAME" "$I2B2_DB_NAME" | \
     interpolate "I2B2_DB_HIVE_USER" "$I2B2_DB_HIVE_USER" | \
     interpolate "I2B2_DB_HIVE_PASSWORD" "$I2B2_DB_HIVE_PASSWORD" > dockerbuilds/i2b2/CRCLoaderApplicationContext.xml 
-    echo "dockerbuilds/i2b2/CRCLoaderApplicationContext.xml" >> files_created
+    echo "./dockerbuilds/i2b2/CRCLoaderApplicationContext.xml" >> files_created
 
 for p in ./dockerbuilds/i2b2*/skel/*ds.xml; do
         skel="skel/"
@@ -90,7 +90,7 @@ interpolate "I2B2_DB_ONT_USER" "${I2B2_DB_ONT_USER}" | \
 interpolate "I2B2_DB_SHRINE_ONT_USER" "$I2B2_DB_SHRINE_ONT_USER" | \
 interpolate "I2B2_DB_SHRINE_ONT_DATASOURCE_NAME" "$I2B2_DB_SHRINE_ONT_DATASOURCE_NAME" | \
 interpolate "I2B2_DB_SHRINE_ONT_PASSWORD" "${I2B2_DB_SHRINE_ONT_PASSWORD}" > dockerbuilds/postgres/i2b2setup.sql
-echo "dockerbuilds/postgres/i2b2setup.sql" >> files_created
+echo "./dockerbuilds/postgres/i2b2setup.sql" >> files_created
 
 interpolate_file ./dockerbuilds/postgres/skel/shrinesetup.sql "SHRINE_IP" "${SHRINE_IP}" | \
 interpolate "SHRINE_SSL_PORT" "${SHRINE_SSL_PORT}" | \
@@ -104,4 +104,4 @@ interpolate "I2B2_DB_ONT_USER" "${I2B2_DB_ONT_USER}" | \
 interpolate "I2B2_DB_SHRINE_ONT_USER" "$I2B2_DB_SHRINE_ONT_USER" | \
 interpolate "I2B2_DB_SHRINE_ONT_DATASOURCE_NAME" "$I2B2_DB_SHRINE_ONT_DATASOURCE_NAME" | \
 interpolate "I2B2_DB_SHRINE_ONT_PASSWORD" "${I2B2_DB_SHRINE_ONT_PASSWORD}" > dockerbuilds/postgres/shrinesetup.sql
-echo "dockerbuilds/postgres/shrinesetup.sql" >> files_created
+echo "./dockerbuilds/postgres/shrinesetup.sql" >> files_created
