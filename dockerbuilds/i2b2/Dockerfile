@@ -17,13 +17,13 @@ COPY CRCLoaderApplicationContext.xml /opt/jboss/i2b2core/edu.harvard.i2b2.crc/et
 
 #INSERT PM TABLES WITH DATA AND DEPLOY
 RUN rm -f "$JBOSS_HOME/standalone/deployments/i2b2.war/WEB-INF/conf/axis2.xml" \ 
-&& cd i2b2core/edu.harvard.i2b2.server-common \
-&& ant clean dist deploy jboss_pre_deployment_setup
-RUN cd i2b2core/edu.harvard.i2b2.pm \
-&& ant -f master_build.xml clean build-all deploy \
-&& cd ../edu.harvard.i2b2.ontology \
-&& ant -f master_build.xml clean build-all deploy \
-&& cd ../edu.harvard.i2b2.crc \
-&& ant -f master_build.xml clean build-all deploy \
-&& cd ../edu.harvard.i2b2.workplace \
-&& ant -f master_build.xml clean build-all deploy
+	&& cd i2b2core/edu.harvard.i2b2.server-common \
+	&& ant clean dist deploy jboss_pre_deployment_setup \
+	&& cd i2b2core/edu.harvard.i2b2.pm \
+	&& ant -f master_build.xml clean build-all deploy \
+	&& cd ../edu.harvard.i2b2.ontology \
+	&& ant -f master_build.xml clean build-all deploy \
+	&& cd ../edu.harvard.i2b2.crc \
+	&& ant -f master_build.xml clean build-all deploy \
+	&& cd ../edu.harvard.i2b2.workplace \
+	&& ant -f master_build.xml clean build-all deploy
