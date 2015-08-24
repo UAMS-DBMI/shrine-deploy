@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-#Restarts SHRINE Containers without dropping databases
+# Restarts SHRINE Containers without dropping databases
 
-INSTALL_PATH=`pwd`
+INSTALL_PATH=i$(pwd)
 
 function stop_rm {
-	sudo docker rm `sudo docker stop $1`
+	sudo docker rm $(sudo docker stop $1)
 }
 
 stop_rm shrinecentralhubDemo
