@@ -7,7 +7,7 @@
 source settings.rc
 
 # Keep a list of files created during this process for cleanup
-rm -f files_created | touch files_create
+rm -f files_created | touch files_created
 
 for p in ./dockerbuilds/*/skel/Dockerfile; do
 	skel="skel/"
