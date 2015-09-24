@@ -72,7 +72,7 @@ for p in ./dockerbuilds/shrine*/skel/*.js; do
 	echo ${outfile} >> files_created
 done
 
-for p in ./dockerbuilds/shrine*/skel/*.sql; do
+for p in ./dockerbuilds/*/skel/*.sql; do
 	skel="skel/"
 	outfile=${p/$skel/}
 	interpolate_file "${p}" "SHRINE_IP" "${SHRINE_IP}" | \
