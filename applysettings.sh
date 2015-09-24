@@ -72,10 +72,10 @@ for p in ./dockerbuilds/shrine*/skel/*.js; do
 	echo ${outfile} >> files_created
 done
 
-for p in ./dockerbuilds/shrine*/skel/*.js; do
+for p in ./dockerbuilds/shrine*/skel/*.sql; do
 	skel="skel/"
 	outfile=${p/$skel/}
-	interpolate_file ./dockerbuilds/postgres/skel/i2b2setup.sql "SHRINE_IP" "${SHRINE_IP}" | \
+	interpolate_file "${p}" "SHRINE_IP" "${SHRINE_IP}" | \
 		interpolate "SHRINE_SSL_PORT" "${SHRINE_SSL_PORT}" | \
 		interpolate "SHRINE_USER" "${SHRINE_USER}" | \
 		interpolate "SHRINE_PASSWORD_CRYPTED" "${SHRINE_PASSWORD_CRYPTED}" | \
@@ -87,6 +87,6 @@ for p in ./dockerbuilds/shrine*/skel/*.js; do
 		interpolate "I2B2_DB_ONT_USER" "${I2B2_DB_ONT_USER}" | \
 		interpolate "I2B2_DB_SHRINE_ONT_USER" "$I2B2_DB_SHRINE_ONT_USER" | \
 		interpolate "I2B2_DB_SHRINE_ONT_DATASOURCE_NAME" "$I2B2_DB_SHRINE_ONT_DATASOURCE_NAME" | \
-		interpolate "I2B2_DB_SHRINE_ONT_PASSWORD" "${I2B2_DB_SHRINE_ONT_PASSWORD}" > dockerbuilds/postgres/i2b2setup.sql
+		interpolate "I2B2_DB_SHRINE_ONT_PASSWORD" "${I2B2_DB_SHRINE_ONT_PASSWORD}" > "${outfile}"
 	echo ${outfile} >> files_created
 done
