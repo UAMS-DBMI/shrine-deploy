@@ -20,7 +20,7 @@ done
 for p in ./dockerbuilds/i2b2*/skel/*properties; do
 	skel="skel/"
 	outfile=${p/$skel/}
-	interpolate_file "${p}" "SHRINE_IP" "${SHRINE_IP}" | \
+	interpolate_file "${p}" "I2B2_EXTERNAL_DATABASE_ADDR" "${I2B2_EXTERNAL_DATABASE_ADDR}" | \
 		interpolate "I2B2_DEFAULT_SCHEMA_PASSWORD" "$I2B2_DEFAULT_SCHEMA_PASSWORD" > "${outfile}"
 	echo ${outfile} >> files_created
 done
