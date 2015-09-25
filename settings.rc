@@ -28,6 +28,7 @@ export I2B2_WORK_IP=postgresi2b2
 #populated with values, then shut down and re-launched as a new container only accessible via the
 #Docker network
 export I2B2_DEFAULT_DATABASE_ADDR=postgresi2b2
+export I2B2_EXTERNAL_DATABASE_ADDR=
 #The default password for i2b2 database schemas
 export I2B2_DEFAULT_SCHEMA_PASSWORD=demouser
 
